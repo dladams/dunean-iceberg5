@@ -1,0 +1,43 @@
+#!/bin/sh
+
+RUN1=$1
+RUN2=$2
+OPT=$3
+
+if [ -z "$RUN1" ]; then
+  echo Usage: $0 RUN1 [RUN2]
+  exit 0
+fi
+
+if [ -n "$RUN2" ]; then
+  if [ $RUN2 -eq $RUN2 ] 2>/dev/null; then
+    RUN=$RUN1
+    while [ $RUN -le $RUN2 ]; do
+      echo Submitting $RUN
+      $0 $RUN $OPT
+      RUN=$(($RUN+1))
+    done
+    exit 0
+  else
+    OPT=$RUN2
+  fi
+fi
+
+RUN=$RUN1
+FRUN=00$RUN
+
+if [ $RUN -lt 5360 ]; then
+  PER=3
+elif [ $RUN -lt 6100 ]; then
+  PER=4a
+else
+  PER=4b
+fi
+
+ibFindFiles $RUN - >&2
+if [ "$OPT" = "." ]; then OPT=; fi
+echo duneproc ib4taiNoiseDft/setIceberg$PER iceberg$FRUN $OPT >>runjobs.txt
+echo duneproc ib4cnrNoiseDft/setIceberg$PER iceberg$FRUN $OPT >>runjobs.txt
+echo duneproc ib4taiNoiseDft/ibsetDftFmax200/setIceberg$PER iceberg$FRUN $OPT >>runjobs.txt
+echo duneproc ib4cnrNoiseDft/ibsetDftFmax200/setIceberg$PER iceberg$FRUN $OPT >>runjobs.txt
+

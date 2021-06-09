@@ -1,0 +1,46 @@
+#!/bin/sh
+
+SPER=$1
+THR=$2
+XSEL=$3
+SVAR=$4
+
+if [ -z "$THR" ]; then THR=default; fi
+if [ -z "$SVAR" ]; then SVAR=qroi; fi
+
+if [ $THR = default ]; then
+  if [ ${SPER:0:2} = 5a ]; then   THR=1.5
+  elif [ ${SPER:0:2} = 5b ]; then THR=1.2
+  elif [ ${SPER:0:2} = 5c ]; then THR=1.2
+  elif [ ${SPER:0:2} = 5d ]; then THR=1.5
+  elif [ ${SPER:0:2} = 5e ]; then THR=0.8
+  elif [ ${SPER:0:2} = 5j ]; then THR=1.2
+  elif [ ${SPER:0:2} = 5l ]; then THR=0.7
+  elif [ ${SPER:0:2} = 5n ]; then THR=0.7
+  elif [ ${SPER:0:2} = 5q ]; then THR=0.7
+  elif [ ${SPER:0:2} = 4b ]; then THR=0.7
+  elif [ ${SPER:0:2} = 5C ]; then
+    if   [ ${SPER:3:1} = 0 ]; then THR=2.4
+    elif [ ${SPER:3:1} = 1 ]; then THR=1.2
+    elif [ ${SPER:3:1} = 2 ]; then THR=0.6
+    elif [ ${SPER:3:1} = 3 ]; then THR=0.4
+    fi
+  else                            THR=0.5
+  fi
+fi
+echo Using height threshold $THR ke for period SPER
+SSEL="status==0&&channel>=800&&hmax>=$THR"
+if [ -n "$XSEL" ]; then
+  SSEL="$SSEL&&$XSEL"
+fi
+# If user provides tau without t0, add t0;
+if [[ "$SVAR" == *tau* ]] && ! [[ "$SVAR" == *tzero* ]]; then
+  if   [ ${SPER:0:1} == 4 ]; then SVAR=$SVAR,tzero500
+  elif [ ${SPER:0:1} == 5 ]; then SVAR=$SVAR,tzero670
+  fi
+fi
+echo Variable: $SVAR
+echo Selection: $SSEL
+
+echo '{drawSigstrenChain("'$SPER'", "'$SVAR'", "'$SSEL'");}' >tmp.C
+root.exe -b -q tmp.C

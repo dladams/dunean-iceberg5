@@ -1,0 +1,327 @@
+# C02-cos1
+./procRun 9179
+./procRun 9180
+./procRun 9181
+./procRun 9182
+./procRun 9183
+./procRun 9184
+./procRun 9185
+./procRun 9186
+./procRun 9187
+./procRun 9188
+./procRun 9189
+
+# C12-cos1
+./procRun 9190
+./procRun 9191
+./procRun 9192
+./procRun 9193
+./procRun 9194
+./procRun 9195
+./procRun 9196
+./procRun 9197
+./procRun 9198
+./procRun 9199
+./procRun 9200
+
+# C32-cos1
+./procRun 9201
+./procRun 9202
+./procRun 9203
+./procRun 9204
+./procRun 9205
+./procRun 9206
+./procRun 9207
+./procRun 9208
+./procRun 9209
+./procRun 9210
+./procRun 9211
+
+# C20-cos1
+./procRun 9234
+./procRun 9235
+./procRun 9236
+./procRun 9237
+./procRun 9238
+./procRun 9239
+./procRun 9240
+./procRun 9241
+./procRun 9242
+./procRun 9243
+./procRun 9244
+
+# C23-cos1
+./procRun 9245
+./procRun 9246
+./procRun 9247
+./procRun 9248
+./procRun 9249
+./procRun 9250
+./procRun 9251
+./procRun 9252
+./procRun 9253
+./procRun 9254
+./procRun 9255
+
+# C22l-cos1
+./procRun 9267
+./procRun 9268
+./procRun 9269
+./procRun 9270
+./procRun 9271
+./procRun 9272
+./procRun 9273
+./procRun 9274
+./procRun 9275
+./procRun 9276
+./procRun 9277
+
+# 5C31-cos1
+./procRun 9278
+./procRun 9279
+./procRun 9280
+./procRun 9281
+./procRun 9282
+./procRun 9283
+./procRun 9284
+./procRun 9285
+./procRun 9286
+./procRun 9287
+./procRun 9288
+
+# 5C33-cos1
+./procRun 9289
+./procRun 9290
+./procRun 9291
+./procRun 9292
+./procRun 9293
+./procRun 9294
+./procRun 9295
+./procRun 9296
+./procRun 9297
+./procRun 9298
+./procRun 9299
+
+# 5C11-cos1
+./procRun 9300
+./procRun 9301
+./procRun 9302
+./procRun 9303
+./procRun 9304
+./procRun 9305
+./procRun 9306
+./procRun 9307
+./procRun 9308
+./procRun 9309
+./procRun 9310
+
+# 5C13-cos1
+./procRun 9311
+./procRun 9312
+./procRun 9313
+./procRun 9314
+./procRun 9315
+./procRun 9316
+./procRun 9317
+./procRun 9318
+./procRun 9319
+./procRun 9320
+./procRun 9321
+
+# 5C01-cos1 
+./procRun 9431
+./procRun 9432
+./procRun 9433
+./procRun 9434
+./procRun 9435
+
+# 5C03-cos1 
+./procRun 9436
+./procRun 9437
+./procRun 9438
+./procRun 9439
+./procRun 9440
+
+# 5C02-cos2 
+./procRun 9441
+./procRun 9442
+./procRun 9443
+./procRun 9444
+./procRun 9445
+
+# 5C11-cos1 
+./procRun 9446
+./procRun 9447
+./procRun 9448
+./procRun 9449
+./procRun 9450
+
+# 5C13-cos2 
+./procRun 9451
+./procRun 9452
+./procRun 9453
+./procRun 9454
+./procRun 9455
+
+# 5C12-cos2 
+./procRun 9456
+./procRun 9457
+./procRun 9458
+./procRun 9459
+./procRun 9460
+
+# 5C20-cos2 
+./procRun 9466
+./procRun 9467
+./procRun 9468
+./procRun 9469
+./procRun 9460
+
+# 5C23-cos2 
+./procRun 9471
+./procRun 9472
+./procRun 9473
+./procRun 9474
+./procRun 9475
+
+
+
+
+
+# 5C02-pul1 
+./procRun 9526
+./procRun 9527
+./procRun 9528
+./procRun 9529
+./procRun 9530
+./procRun 9531
+./procRun 9532
+./procRun 9533
+./procRun 9534
+./procRun 9535
+./procRun 9536
+
+# 5C02-pul1 
+./procRun 9537
+./procRun 9538
+./procRun 9539
+./procRun 9540
+./procRun 9541
+./procRun 9542
+./procRun 9543
+./procRun 9544
+./procRun 9545
+./procRun 9546
+./procRun 9547
+
+# 5C02-pul1 
+./procRun 9548
+./procRun 9549
+./procRun 9550
+./procRun 9551
+./procRun 9552
+./procRun 9553
+./procRun 9554
+./procRun 9555
+./procRun 9556
+./procRun 9557
+./procRun 9558
+
+# 5C02-pul1 
+./procRun 9559
+./procRun 9560
+./procRun 9561
+./procRun 9562
+./procRun 9563
+./procRun 9564
+./procRun 9565
+./procRun 9566
+./procRun 9567
+./procRun 9568
+./procRun 9569
+
+# 5C02-pul1 
+./procRun 9570
+./procRun 9571
+./procRun 9572
+./procRun 9573
+./procRun 9574
+./procRun 9575
+./procRun 9576
+./procRun 9577
+./procRun 9578
+./procRun 9579
+
+# 5C02-pul1 
+./procRun 9580
+./procRun 9581
+./procRun 9582
+./procRun 9583
+./procRun 9584
+./procRun 9585
+./procRun 9586
+./procRun 9587
+./procRun 9588
+./procRun 9589
+./procRun 9590
+
+# 5C02-pul1 
+./procRun 9591
+./procRun 9592
+./procRun 9593
+./procRun 9594
+./procRun 9595
+./procRun 9596
+./procRun 9597
+./procRun 9598
+./procRun 9599
+./procRun 9600
+./procRun 9601
+
+# 5C02-pul1 
+./procRun 9602
+./procRun 9603
+./procRun 9604
+./procRun 9605
+./procRun 9606
+./procRun 9607
+./procRun 9608
+./procRun 9609
+./procRun 9610
+./procRun 9611
+./procRun 9612
+./procRun 9613
+
+# 5C01-cos2
+./procRun 9714
+./procRun 9715
+./procRun 9716
+
+# 5C03-cos2
+./procRun 9717
+./procRun 9718
+
+# 5C02-cos3
+./procRun 9719
+./procRun 9720
+
+# 5C11-cos3
+./procRun 9721
+./procRun 9722
+
+# 5C13-cos3
+./procRun 9723
+./procRun 9724
+
+# 5C12-cos3
+./procRun 9725
+./procRun 9726
+
+# 5C20-cos3
+./procRun 9729
+./procRun 9730
+
+# 5C23-cos3
+./procRun 9731
+./procRun 9732
+

@@ -1,0 +1,185 @@
+#!/bin/sh
+
+TYP=$1    # cal, cnr, ped, pnr or cal-many, ...
+RUN=$2
+FLAG=$3
+if [ "$FLAG" = clean ]; then
+  NPROC=$4
+  NSKIP=$5
+else
+  NPROC=$3
+  NSKIP=$4
+fi
+TREEDIR=addRoiTreeNoise
+
+SRUN=$RUN
+while [ ${#SRUN} -lt 6 ]; do SRUN=0$SRUN; done
+SPER=$(ibRunPeriod $RUN)
+if [ -z "$SPER" ]; then exit 2; fi
+if [ ${SPER:0:1} = 4 ]; then
+  if [ $TYP = nocnr ]; then TYP=tai; fi
+  if [ $TYP = tai -o $TYP = cnr ]; then
+    SCFG=ib4${TYP}NoiseVsChan/setIceberg$SPER/$TREEDIR
+    NOIDIRS=(
+      ib4taiNoiseVsChan/setIceberg$SPER/$TREEDIR
+      ib4cnrNoiseVsChan/setIceberg$SPER/$TREEDIR
+    )
+  elif [ $TYP = "tai-many" -o $TYP = "cnr-many" ]; then
+    SCFG=ib4${TYP:0:3}NoiseTree/setIceberg$SPER
+    NOIOPT=Ib4cnr-many
+    NOIDIRS=(
+      ib4taiNoiseTree/setIceberg$SPER
+      ib4cnrNoiseTree/setIceberg$SPER
+    )
+  else
+    echo Invalid run 4 type: $TYP
+    exit 1
+  fi
+elif [ ${SPER:0:1} = 5 ]; then
+  if [ $TYP = nocnr ]; then TYP=ped; fi
+  if [ $TYP = cal -o $TYP = cnr ]; then
+    SCFG=ib5${TYP}NoiseVsChan/setIceberg$SPER/$TREEDIR
+    NOIOPT=Ib5cnr
+    NOIDIRS=(
+      ib5calNoiseVsChan/setIceberg$SPER/$TREEDIR
+      ib5cnrNoiseVsChan/setIceberg$SPER/$TREEDIR
+    )
+  elif [ $TYP = ped -o $TYP = pnr ]; then
+    SCFG=ib5${TYP}NoiseVsChan/setIceberg$SPER/$TREEDIR
+    NOIOPT=Ib5pnr
+    NOIDIRS=(
+      ib5pedNoiseVsChan/setIceberg$SPER/$TREEDIR
+      ib5pnrNoiseVsChan/setIceberg$SPER/$TREEDIR
+    )
+  elif [ $TYP = "ped-many" -o $TYP = "pnr-many" ]; then
+    SCFG=ib5${TYP:0:3}NoiseTree/setIceberg$SPER
+    NOIOPT=Ib5pnr-many
+    NOIDIRS=(
+      ib5pedNoiseTree/setIceberg$SPER
+      ib5pnrNoiseTree/setIceberg$SPER
+    )
+  else
+    echo Invalid run 5 type: $TYP
+    exit 1
+  fi
+else
+  echo Invalid run period $SPER derived for run $SRUN
+  exit 1
+fi
+SDAT=iceberg$SRUN
+SDATDIR=$SDAT
+if [ -n "$NPROC" ]; then
+  SNPROC=$NPROC
+  while [ ${#SNPROC} -lt 6 ]; do SNPROC=0$SNPROC; done
+  SDATDIR=${SDATDIR}_proc$SNPROC
+fi
+if [ -n "$NSKIP" ]; then
+  SNSKIP=$NSKIP
+  while [ ${#SNSKIP} -lt 6 ]; do SNSKIP=0$SNSKIP; done
+  SDATDIR=${SDATDIR}_skip$SNSKIP
+fi
+RUNDIR=$SCFG/$SDATDIR
+NOIFIL=${NOIDIRS[-1]}/$SDATDIR/noisesum_run$SRUN.txt
+NOILOG=${NOIDIRS[-1]}/$SDATDIR/noisesum_run$SRUN.log
+THR1=0.9
+THR2=5.0
+SSEL1='channel>=800&&status==0&&hmax>'$THR1
+SSEL2='channel>=800&&status==0&&hmax>'$THR2
+
+if [ "$FLAG" = clean ]; then
+  echo Cleaning... $RUNDIR
+  rm -rf $RUNDIR
+fi
+
+echo
+if [ ! -r $RUNDIR ]; then
+  ibFindFiles $RUN - >/dev/null
+  echo
+  echo "******* Processing event data for $TYP..."
+ls -lsd $RUNDIR
+  duneproc $SCFG $SDAT $NPROC $NSKIP
+  if [ ! -r $RUNDIR/adcrois.root ]; then
+    echo Event processing failed.
+    exit 1
+  fi
+else
+  echo "******* Event processing directory exists: $RUNDIR"
+fi
+
+# If the run is split into event groups, the first group is temporarily
+# linked to the unsplit directory name so we can evaluate noise.
+echo
+if [ -n "$NPROC" ]; then
+  if [ -z "$NSKIP" -o "$NSKIP" = 0 ]; then
+    if [ ! -r $NOIFIL -a ! -r $NOILOG ]; then
+      DONOISE=true
+      for NOIDIR in ${NOIDIRS[@]}; do
+        SRCDIR=$NOIDIR/$SDATDIR
+        LNKDIR=$NOIDIR/$SDAT
+        unset LNKDIRS
+        if [ -r $LNKDIR ]; then
+          echo "******* To evaluate nproc noise, remove $LNKDIR"
+          DONOISE=
+          break
+        fi
+        if [ ! -r $SRDDIR ]; then
+          echo "******* Noise input directory not found: $SRCDIR"
+          DONOISE=
+          break
+        fi
+        ln -s $(readlink -f $SRCDIR) $LNKDIR
+        LNKDIRS+=($LNKDIR)
+      done
+      if [ -n "$DONOISE" ]; then
+        echo "******* Evaluating $TYP noise for NSKIP $NSKIP."
+        drawNoise $NOIOPT $RUN
+      fi
+      for LNKDIR in ${LNKDIRS[@]}; do
+        rm $LNKDIR
+      done
+    else
+      echo "******* Noise is already evaluated for NSKIP $NSKIP."
+    fi
+  else
+    echo "******* Not evaluating noise for NKIP $NSKIP."
+  fi
+else
+  if [ -r $NOIFIL ]; then NOIHAV=$NOIFIL
+  elif [ -r $NOILOG ]; then NOIHAV=$NOILOG
+  else NOIHAV=
+  fi
+  if [ -z "$NOIHAV" ]; then
+    DONOISE=true
+    for BASDIR in ${NOIDIRS[@]}; do
+      NOIDIR=$BASDIR/$SDATDIR
+      if [ ! -r $NOIDIR ]; then
+        echo "****** Noise input not found: $NOIDIR"
+        DONOISE=
+        break
+      fi
+      #echo Found $NOIDIR
+    done
+    if [ -n "$DONOISE" ]; then  
+      echo "******* Evaluating noise."
+      drawNoise $NOIOPT $RUN
+    fi
+  else
+    echo "******* Noise is already evaluated: $NOIHAV"
+  fi
+fi
+
+echo
+if ls $RUNDIR/sigstren*.png 2>/dev/null 1>/dev/null && ls $RUNDIR/sigheight*.png 2>/dev/null 1>/dev/null; then
+  echo "******* ROI plots are already present."
+elif [ -r $RUNDIR/adcrois.root ]; then
+  echo "******* Evaluating $TYP signal strength."
+  echo Processing tree...
+  root.exe -b -q 'drawSigstren.C("'$RUNDIR'", "qroi", "'$SSEL1'")'
+  root.exe -b -q 'drawSigstren.C("'$RUNDIR'", "hmax:100", "'$SSEL1'")'
+else
+  echo ROI tree file not found: $RUNDIR/adcrois.root
+  exit 1
+fi
+
+echo
+echo "Finished processing $RUNDIR"

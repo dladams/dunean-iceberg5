@@ -1,0 +1,10 @@
+RUN=$1
+NEVT=$2
+
+SFRUN=$RUN
+while [ ${#SFRUN} -lt 6 ]; do SFRUN=0$SFRUN; done
+SPER=$(ibRunPeriod $RUN)
+
+ibFindFiles $RUN -
+duneproc roiTree iceberg$SFRUN $NEVT
+

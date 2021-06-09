@@ -1,0 +1,33 @@
+# roiTree.fcl
+#
+# David Adams
+# March 2021
+#
+# Make Iceberg ROI tree at ADC level for input to
+# rough calibration.
+#
+#include "run_dataprep_iceberg.fcl"
+#include "setIceberg5a.fcl"
+
+services.RawDigitPrepService.ToolNames: [
+  @sequence::data.ib5_dataprep_seqs.nocal,
+  #@sequence::ib5_dataprep_tools_calib_only,
+  pdsp_RemoveBadChannels,
+  adcThresholdSignalFinder,
+  #ibcht_Zplanes,
+  #ibcht_Iplanes,
+  #adcRoiViewer,
+  adcRoiTreeMaker
+]
+
+# May want to twiddle these.
+#tools.adcThresholdSignalFinder.Threshold:  0.5
+tools.adcThresholdSignalFinder.Threshold: 20
+#tools.adcThresholdSignalFinder.Threshold: 2000    # For run 8415
+
+# For low gain
+#tools.adcThresholdSignalFinder.BinsBefore: 1
+#tools.adcThresholdSignalFinder.BinsAfter: 5
+
+  #ibchtke_Zplanes,
+  #ibchtke_Iplanes,

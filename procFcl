@@ -1,0 +1,56 @@
+#!/bin/sh
+
+FCL=$1
+RUN=$2
+FLAG=$3
+SRUN=00$RUN
+SPER=$(ibRunPeriod $RUN)
+SCFG=$FCL/setIceberg$SPER/addRoiTree
+SDAT=iceberg$SRUN
+RUNDIR=$SCFG/$SDAT
+THR=0.9
+if [ $SPER = 5a ]; then THR=5.0; fi
+SSEL='channel>=800&&status==0&&hmax>'$THR
+OUTDIR=$HOME/xfer/2021/0320/$FCL/$SPER/$RUN
+
+if [ "$FLAG" = clean ]; then
+  rm -rf $RUNDIR
+  rm -rf $OUTDIR
+fi
+
+
+echo
+if [ ! -r $RUNDIR ]; then
+  ibFindFiles $RUN -
+  echo Processing event data...
+  duneproc $SCFG $SDAT
+  if [ ! -r $RUNDIR/adcrois.root ]; then
+    echo Event processing failed.
+    exit 1
+  fi
+else
+  echo Event processing directory exists: $RUNDIR
+fi
+drawNoise $RUN
+
+echo
+if [ -r $RUNDIR/adcrois.root ]; then
+  echo
+  echo Processing tree...
+  root.exe -b -q 'drawSigstren.C("'$RUNDIR'", "'$SSEL'")'
+else
+  echo ROI tree file not found: $RUNDIR/adcrois.root
+  exit 1
+fi
+
+if [ -r $OUTDIR ]; then
+  rm $OUTDIR/*
+else
+  mkdir -p $OUTDIR
+fi
+
+if [ -r $OUTDIR ]; then
+  echo
+  echo copying files to $OUTDIR
+  cp $RUNDIR/*.png $OUTDIR
+fi

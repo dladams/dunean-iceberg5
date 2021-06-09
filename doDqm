@@ -1,0 +1,8 @@
+RUN=$1
+EVT=$2
+SRUN=$(formatInt $RUN)
+SEVT=$(formatInt $EVT)
+SPER=$(ibRunPeriod $RUN)
+
+duneproc run_iceberg${SPER}_dqm1 iceberg$SRUN/event$SEVT
+savedqmi $RUN $EVT

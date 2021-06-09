@@ -1,0 +1,21 @@
+RUN=$1
+ARG=$2
+if [ -z "$ARG" ]; then ARG=evcount; fi
+
+PRE=ib5taiNoiseVsChan/setIceberg5f/addRoiTree
+DIR=$PRE/iceberg00$RUN
+LOG=$DIR/run.log
+
+echo Checking $LOG
+
+if [ $ARG = evcount ]; then
+  grep "event count" $LOG
+elif [ $ARG = trigger ]; then
+  grep "Trigger flag:" $LOG
+elif [ $ARG = digits ]; then
+  grep "All # input digits" $LOG
+elif [ $ARG = noisesum ]; then
+  cat $DIR/noisesum*.txt
+else
+  echo Invalid ARG: $ARG
+fi

@@ -1,0 +1,25 @@
+# 3/20 shaping scan
+./procRun 8874
+./procRun 8875
+./procRun 8876
+./procRun 8877
+./procRun 8878
+./procRun 8879
+./procRun 8880
+./procRun 8881
+./procRun 8882
+./procRun 8883
+./procRun 8884
+./procRun 8885
+./procRun 8886
+./procRun 8887
+./procRun 8888
+./procRun 8889
+./procRun 8890
+./procRun 8891
+./procRun 8892
+./procRun 8893
+./procRun 8894
+./procRun 8895
+./procRun 8896
+./procRun 8897

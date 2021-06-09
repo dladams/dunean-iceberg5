@@ -1,0 +1,106 @@
+
+./procRun 8635 500  500
+./procRun 8635 500 1000
+./procRun 8635 500 1500
+./procRun 8635 500 2000
+
+./procRun 8636 500  500
+./procRun 8636 500 1000
+./procRun 8636 500 1500
+./procRun 8636 500 2000
+
+./procRun 8637 500  500
+./procRun 8637 500 1000
+./procRun 8637 500 1500
+./procRun 8637 500 2000
+
+./procRun 8636 500  500
+./procRun 8636 500 1000
+./procRun 8637 500  500
+./procRun 8637 500 1000
+
+./procRun 8640 500  500
+./procRun 8640 500 1000
+./procRun 8640 500 1500
+./procRun 8640 500 2000
+
+./procRun 8641 500  500
+./procRun 8641 500 1000
+./procRun 8641 500 1500
+./procRun 8641 500 2000
+
+./procRun 8642 500  500
+./procRun 8642 500 1000
+./procRun 8642 500 1500
+./procRun 8642 500 2000
+
+./procRun 8643 500  500
+./procRun 8643 500 1000
+./procRun 8643 500 1500
+./procRun 8643 500 2000
+
+./procRun 8644 500  500
+./procRun 8644 500 1000
+./procRun 8644 500 1500
+./procRun 8644 500 2000
+
+./procRun 8649 500  500
+./procRun 8649 500 1000
+./procRun 8649 500 1500
+./procRun 8649 500 2000
+
+./procRun 8650 500  500
+./procRun 8650 500 1000
+./procRun 8650 500 1500
+./procRun 8650 500 2000
+
+./procRun 8644 500  500
+./procRun 8644 500 1000
+./procRun 8644 500 1500
+./procRun 8644 500 2000
+
+./procRun 8655 500  500
+./procRun 8655 500 1000
+./procRun 8655 500 1500
+./procRun 8655 500 2000
+
+./procRun 8658 500  500
+./procRun 8658 500 1000
+./procRun 8658 500 1500
+./procRun 8658 500 2000
+
+./procRun 8659 500  500
+./procRun 8659 500 1000
+./procRun 8659 500 1500
+./procRun 8659 500 2000
+
+./procRun 8660 500  500
+./procRun 8660 500 1000
+./procRun 8660 500 1500
+./procRun 8660 500 2000
+
+./procRun 8661 500  500
+./procRun 8661 500 1000
+./procRun 8661 500 1500
+./procRun 8661 500 2000
+
+./procRun 8667 500  500
+./procRun 8667 500 1000
+./procRun 8667 500 1500
+./procRun 8667 500 2000
+
+./procRun 8668 500  500
+./procRun 8668 500 1000
+./procRun 8668 500 1500
+./procRun 8668 500 2000
+
+./procRun 8674 500  500
+./procRun 8674 500 1000
+./procRun 8674 500 1500
+./procRun 8674 500 2000
+
+./procRun 8675 500  500
+./procRun 8675 500 1000
+./procRun 8675 500 1500
+./procRun 8675 500 2000
+

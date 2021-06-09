@@ -1,0 +1,10 @@
+RUN=$1
+OPT=$2
+
+SFRUN=$RUN
+while [ ${#SFRUN} -lt 6 ]; do SFRUN=0$SFRUN; done
+SPER=$(ibRunPeriod $RUN)
+
+ibFindFiles $RUN -
+duneproc run_dataprep_iceberg/setIceberg$SPER iceberg$SFRUN retry | grep "input digits"
+

@@ -1,0 +1,10 @@
+#!/bin/sh
+
+#./procNoise cal $*
+#./procNoise cnr $*
+
+#./procNoise ped $*
+#./procNoise pnr $*
+
+./procNoise ped-many $*
+./procNoise pnr-many $*

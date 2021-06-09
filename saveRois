@@ -1,0 +1,32 @@
+RUN=$1
+EVT=$2
+if [ -z "$2" -o "$1" = "-h" ]; then
+  echo Usage: $0 RUN EVENT
+  exit 0
+fi
+SRUN=$RUN
+SEVT=$EVT
+while [ ${#SRUN} -lt 6 ]; do SRUN="0"$SRUN; done
+while [ ${#SEVT} -lt 6 ]; do SEVT="0"$SEVT; done
+SPER=$(ibRunPeriod $RUN)
+INDIR=roiwTree/iceberg$SRUN/event$SEVT
+INFILS=$(cd $INDIR; ls roi_chan*.png)
+if [ -z "$INFILS" ]; then
+  echo Input files not found in $INDIR
+  exit 1
+fi
+OUTDIR=$HOME/wwwdune/protodune/iceberg/data/rois/run$SRUN/event$SEVT
+if [ -r $OUTDIR ]; then
+  echo Remove existing output directory to save new files:
+  echo "  $OUTDIR"
+  exit 2
+fi
+mkdir -p $OUTDIR
+echo Copying files to $OUTDIR
+for INFIL in $INFILS; do
+  cp $INDIR/$INFIL $OUTDIR/roi_run${SRUN}_event${SEVT}_${INFIL:4}
+done
+makeIndex $OUTDIR
+makeIndex $OUTDIR/.. f
+makeIndex $OUTDIR/../.. f
+

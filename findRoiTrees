@@ -1,0 +1,35 @@
+#!/bin/sh
+
+SPER=$1
+
+OUTFILE=chains/adcrois.txt
+if [ -n "$SPER" ]; then OUTFILE=chains/adcrois-$SPER.txt
+else
+  echo Usage: $0 PERIOD
+  exit 0
+fi
+
+PRE=ib5pnr
+if [ $SPER = 4b ]; then
+  PRE=ib4tai
+fi
+
+SKIPS='8417 8769 8770 8771 8772 8775 8948 8949'
+
+rm -f $OUTFILE
+for FILE in $(find ${PRE}NoiseVsChan/setIceberg$SPER/addRoiTreeNoise/iceberg* -name adcrois.root); do
+  KEEP=true
+  for SKIP in $SKIPS; do
+    if [[ $FILE =~ $SKIP ]]; then
+      KEEP=false
+      echo Skipping $FILE
+      break
+    fi
+  done
+  if [ $KEEP = true ]; then
+    echo Keeping $FILE
+    echo $FILE >>$OUTFILE
+  fi
+done
+echo File list is in $OUTFILE
+echo File count: $(wc -l $OUTFILE | sed 's/ .*//g')

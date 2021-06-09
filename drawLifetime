@@ -1,0 +1,26 @@
+#!/bin/sh
+
+SPER=$1
+FOPT=$2
+DOD=false
+ROPT="-b -q"
+if [ -n "$3" ]; then DOD=true; ROPT=; fi
+
+
+if [ -z "$FOPT" ]; then
+  FOPT=mpv32
+fi
+
+if [ $SPER = all ]; then
+  for NAME in $(cat runPeriods.txt); do
+    ./drawLifetime $NAME
+  done
+  exit 0
+fi
+
+PLTFIL=plots-tau/tau_${SPER}_selxrms80_${FOPT}fit.png
+if [ -r $PLTFIL -a $DOD = false ]; then
+  echo File already exists: $PLTFIL
+  exit 1
+fi
+root.exe $ROPT 'drawLifetime.C("'$SPER'", "x", 0.8, 0, 0, "'$FOPT'", 0, 0.0, '$DOD')'

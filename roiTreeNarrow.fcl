@@ -1,0 +1,3 @@
+#include "roiTree.fcl"
+tools.adcThresholdSignalFinder.BinsBefore: 1
+tools.adcThresholdSignalFinder.BinsAfter: 1

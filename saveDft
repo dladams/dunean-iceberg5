@@ -1,0 +1,82 @@
+#!/bin/sh
+
+RUNDIR=$1
+
+if [ -z "$RUNDIR" ]; then
+  echo Usage: $0 RUNDIR
+  exit 0
+fi
+
+SLABFIX=
+if [ ${RUNDIR:0:3} = run -a ${#RUNDIR} = 9 ]; then
+  SRUN=${RUNDIR:3}
+  SRUN1=iceberg$SRUN
+  SRUN2=run$SRUN
+elif [ ${RUNDIR:0:5} = group -a ${#RUNDIR} -ge 18 ]; then
+  SRUN=${RUNDIR:5}
+  SRUN1=ibgroup$SRUN
+  SRUN2=group$SRUN
+  RUN1=${SRUN:0:6}
+  RUN2=${SRUN:7:6}
+  RUNE=${SRUN:14}
+  while [ ${#RUN1} -gt 1 -a ${RUN1:0:1} = "0" ]; do RUN1=${RUN1:1}; done
+  while [ ${#RUN2} -gt 1 -a ${RUN2:0:1} = "0" ]; do RUN2=${RUN2:2}; done
+  SLABFIX="Runs $RUN1-$RUN2"
+  if [ -n "$RUNE" ]; then
+    SLABFIX="$SLABFIX ($RUNE)"
+  fi
+  echo SLABFIX: $SLABFIX
+else
+  echo Invalid RUNDIR: $RUNDIR
+  exit 1
+fi
+
+OUTDIR=wwwdft/$SRUN2
+if [ -r $OUTDIR ]; then
+  echo Destination directory already exists: $OUTDIR
+  if ! ls -ls $OUTDIR/*; then
+    rmdir $OUTDIR
+  else
+    exit 1
+  fi
+fi
+if ! mkdir $OUTDIR; then
+  exit 1
+fi
+
+for FRQ in 0 200; do
+  INPAT=ib5%RECO%NoiseDft
+  if [ $FRQ -gt 0 ]; then
+    INPAT=$INPAT/ibsetDftFmax$FRQ
+  fi
+  MRGBAS="plots-dft/dftpowt_$SRUN2"
+  if [ $FRQ -ne 0 ]; then MRGBAS=${MRGBAS}_$FRQ; fi
+  INPAT=$INPAT/setIceberg5a/$SRUN1/dftpowt_run${SRUN:0:6}.tpad
+  OUTPAT="$MRGBAS.{png,tpad}"
+  root.exe -b -q '$DUNENOISE_DIR/root/ibMergeDftPlots.C("'$INPAT'", "'$SRUN2'", "'$OUTPAT'")'
+  if [ ! -r $MRGBAS.tpad ]; then
+    echo Not found: $MRGBAS.tpad
+    exit 1
+  fi
+  if [ -n "$SLABFIX" ]; then
+    root.exe -b -q "fixDftPlots.C(\"$MRGBAS\", \"$SLABFIX\")"
+    INFIL=${MRGBAS}Fixed.png
+  else
+    INFIL=$MRGBAS.png
+  fi
+  if [ ! -r $INFIL ]; then
+     echo Merged file not found: $INFIL
+     exit 1
+  else
+    OUTFIL=$OUTDIR/dftpowt_$SRUN2-$REC
+    if [ $FRQ -gt 0 ]; then
+      OUTFIL=$OUTFIL-$FRQ
+    fi
+    OUTFIL=$OUTFIL.png
+    echo Copying $INFIL
+    if ! cp $INFIL $OUTFIL; then exit 1; fi
+  fi
+done
+
+makeIndex $OUTDIR
+makeIndex $OUTDIR/.. p

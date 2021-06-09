@@ -1,0 +1,13 @@
+#drawNoise 8601
+
+RUN1=8615
+RUN2=8679
+SRUN1=00$RUN1
+SRUN2=00$RUN2
+OUTDIR=$HOME/xfer/2021/0317/noisevstime
+
+drawNoiseVsTime $RUN1 $RUN2 0 nsgrms 200 true
+drawNoiseVsTime $RUN1 $RUN2 0 nsgrms50 2000 true
+echo
+cp noiseVsTime_nsgrms_median_$SRUN1-$SRUN2.png $OUTDIR
+cp noiseVsTime_nsgrms50_median_$SRUN1-$SRUN2.png $OUTDIR

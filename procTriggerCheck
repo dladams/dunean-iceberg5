@@ -1,0 +1,17 @@
+RUN=$1
+OPT=$3
+
+SFRUN=$RUN
+while [ ${#SFRUN} -lt 6 ]; do SFRUN=0$SFRUN; done
+SPER=$(ibRunPeriod $RUN)
+CFG=run_dataprep_iceberg/setIceberg$SPER
+DST=iceberg$SFRUN
+OUTDIR=$CFG/$DST
+
+if [ ! -r $OUTDIR -o "$OPT" = retry ]; then
+  ibFindFiles $RUN -
+  duneproc $CFG $DST $OPT
+fi
+
+LOG=$OUTDIR/run.log
+grep "Trigger flag:" $LOG

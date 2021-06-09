@@ -1,0 +1,8 @@
+RUN=$1
+NEVT=$2
+NSKP=$3
+
+SFRUN=00$RUN
+SPER=$(ibRunPeriod $RUN)
+
+duneproc run_dataprep_iceberg/setIceberg$SPER/dptools_calib/addRoiTree iceberg$SFRUN $NEVT $NSKP

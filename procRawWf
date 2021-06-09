@@ -1,0 +1,13 @@
+RUN=$1
+EVT=$2
+if [ -z "$EVT" ]; then EVT=1; fi
+
+SFRUN=$RUN
+SFEVT=$EVT
+while [ ${#SFRUN} -lt 6 ]; do SFRUN=0$SFRUN; done
+while [ ${#SFEVT} -lt 6 ]; do SFEVT=0$SFEVT; done
+SPER=$(ibRunPeriod $RUN)
+
+duneproc ibWfRaw/setIceberg$SPER iceberg$SFRUN/event$SFEVT
+ibSaveWfRaw $RUN $EVT
+

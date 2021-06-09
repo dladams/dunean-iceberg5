@@ -1,0 +1,1 @@
+RUN=8615; while [ $RUN -le 8679 ]; do echo $RUN: $(showMetadata $RUN | grep "Event Count"); RUN=$(($RUN+1)); done

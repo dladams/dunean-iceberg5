@@ -1,0 +1,69 @@
+# 3/23 calibrated ADC
+
+# 5p
+./procRun 9050
+./procRun 9051
+
+# 5p-pul
+./procRun 9052
+./procRun 9053
+./procRun 9054
+./procRun 9055
+./procRun 9056
+./procRun 9057
+./procRun 9058
+./procRun 9059
+./procRun 9060
+./procRun 9061
+./procRun 9062
+./procRun 9063
+./procRun 9064
+./procRun 9065
+./procRun 9066
+./procRun 9067
+./procRun 9068
+./procRun 9069
+./procRun 9070
+./procRun 9071
+./procRun 9072
+./procRun 9073
+
+# 5q-pul
+./procRun 9074
+./procRun 9075
+./procRun 9076
+./procRun 9077
+./procRun 9078
+./procRun 9080
+./procRun 9081
+./procRun 9082
+./procRun 9083
+./procRun 9084
+
+# 5q
+./procRun 9085
+./procRun 9086
+./procRun 9087
+./procRun 9088
+./procRun 9089
+./procRun 9090
+./procRun 9091
+./procRun 9092
+./procRun 9093
+./procRun 9094
+./procRun 9095
+./procRun 9096
+./procRun 9097
+./procRun 9098
+./procRun 9099
+./procRun 9100
+./procRun 9101
+./procRun 9102
+./procRun 9103
+./procRun 9104
+
+# 5p-0325
+./procRun 9105
+./procRun 9106
+./procRun 9107
+./procRun 9108

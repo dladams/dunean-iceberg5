@@ -1,0 +1,59 @@
+# C21-pul1
+./procRun 9158
+./procRun 9159
+./procRun 9160
+./procRun 9161
+./procRun 9162
+./procRun 9163
+./procRun 9164
+./procRun 9165
+./procRun 9166
+./procRun 9167
+
+# C21-cos1
+./procRun 9223
+./procRun 9224
+./procRun 9225
+./procRun 9226
+./procRun 9227
+./procRun 9228
+./procRun 9229
+./procRun 9230
+./procRun 9231
+./procRun 9232
+./procRun 9233
+
+# C21-pul2
+./procRun 9338
+./procRun 9339
+./procRun 9340
+./procRun 9341
+./procRun 9342
+./procRun 9343
+./procRun 9344
+./procRun 9345
+./procRun 9346
+./procRun 9347
+./procRun 9348
+
+# 5C21-cos2 
+./procRun 9461
+./procRun 9462
+./procRun 9463
+./procRun 9464
+./procRun 9465
+
+# 5C21-pul3 
+./procRun 9518
+./procRun 9519
+./procRun 9520
+./procRun 9521
+./procRun 9522
+./procRun 9523
+./procRun 9524
+./procRun 9525
+
+# 5C21-cos3
+./procRun 9727
+./procRun 9728
+

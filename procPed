@@ -1,0 +1,86 @@
+#!/bin/sh
+
+RUN=$1
+FLAG=$2
+SRUN=$RUN
+while [ ${#SRUN} -lt 6 ]; do SRUN=0$SRUN; done
+SPER=$(ibRunPeriod $RUN)
+if [ -z "$SPER" ]; then exit 2; fi
+SCFG=ib5pedNoiseVsChan/setIceberg$SPER/addRoiTree
+SDAT=iceberg$SRUN
+RUNDIR=$SCFG/$SDAT
+LNKDIR=$RUNDIR
+THR=0.9
+if [ $SPER = 5a ]; then THR=5.0; fi
+SSEL='channel>=800&&status==0&&hmax>'$THR
+
+if [ "$FLAG" = clean ]; then
+  NPROC=$3
+  NSKIP=$4
+else
+  NPROC=$2
+  NSKIP=$3
+fi
+
+if [ -n "$NPROC" ]; then
+  SNPROC=$NPROC
+  while [ ${#SNPROC} -lt 6 ]; do SNPROC=0$SNPROC; done
+  RUNDIR=${RUNDIR}_proc$SNPROC
+fi
+
+if [ -n "$NSKIP" ]; then
+  SNSKIP=$NSKIP
+  while [ ${#SNSKIP} -lt 6 ]; do SNSKIP=0$SNSKIP; done
+  RUNDIR=${RUNDIR}_skip$SNSKIP
+fi
+
+if [ "$FLAG" = clean ]; then
+  echo Cleaning... $RUNDIR
+  rm -rf $RUNDIR
+fi
+
+echo
+if [ ! -r $RUNDIR ]; then
+  ibFindFiles $RUN - >/dev/null
+  echo
+  echo Processing event data...
+  duneproc $SCFG $SDAT $NPROC $NSKIP
+  if [ ! -r $RUNDIR/adcrois.root ]; then
+    echo Event processing failed.
+    exit 1
+  fi
+else
+  echo Event processing directory exists: $RUNDIR
+fi
+
+# If the run is split into event groups, the first group is linked
+# to the unsplit directory name some can evaluate noise.
+if [ -n "$NPROC" ]; then
+  if [ -z "$NSKIP" -o "$NSKIP" = 0 ]; then
+    rm -rf $LNKDIR
+    ln -s $(readlink -f $RUNDIR) $LNKDIR
+    echo "******* Evaluating noise for NSKIP $NSKIP."
+    drawNoise $RUN
+    rm $LNKDIR
+  else
+    echo "******* Not evaluating noise for NKIP $NSKIP."
+  fi
+else
+  echo
+  echo "******* Evaluating noise."
+  drawNoise $RUN
+fi
+
+echo
+echo "******* Evaluating signal strength."
+if [ -r $RUNDIR/adcrois.root ]; then
+  echo
+  echo Processing tree...
+  root.exe -b -q 'drawSigstren.C("'$RUNDIR'", "'$SSEL'")'
+else
+  echo ROI tree file not found: $RUNDIR/adcrois.root
+  exit 1
+fi
+
+echo
+echo "Finished processing $RUNDIR"

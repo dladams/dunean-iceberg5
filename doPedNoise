@@ -1,0 +1,40 @@
+RUN1=$1
+RUN2=$2
+if [ -z "$RUN2" ]; then RUN2=$RUN1; fi
+EVT=1
+SEVT=00000$EVT
+ROPT=retry
+ 
+
+RUN=$RUN1
+while [ $RUN -le $RUN2 ]; do
+  SRUN=00$RUN
+  SPER=$(ibRunPeriod $RUN)
+  OUTDIR=$HOME/wwwdune/protodune/iceberg/data/pednoise/$SPER
+  if [ ! -r $OUTDIR ]; then mkdir $OUTDIR; fi
+  echo
+  echo Processing Iceberg $SPER run $RUN event $EVT
+  date
+  RUNDIR=run_iceberg${SPER}_dqm1/iceberg008300/event000001
+  PDNFIL=chmet_pednoise_all_run${SRUN}_evt${SEVT}.png 
+  RUNDIR=run_iceberg${SPER}_dqm1/iceberg${SRUN}/event${SEVT}
+  SRCFIL=$RUNDIR/$PDNFIL
+  rm -f $OUTDIR/$PDNFIL
+  rm -rf $RUNDIR
+  ibFindFiles $RUN - >tmp.log
+  duneproc run_iceberg${SPER}_dqm1 iceberg00$RUN/event$SEVT >>tmp.log
+  savedqmi $RUN $EVT
+  if [ ! -r $SRCFIL ]; then
+    echo File not found: $SRCFIL
+    echo Log is tmp.log
+    exit 1
+  fi
+  cp $SRCFIL $OUTDIR
+  rm tmp.log
+  makeIndex $OUTDIR k 2>&1 >>tmp.log
+  makeIndex $OUTDIR/.. k 2>&1 >>tmp.log
+  makeIndex $OUTDIR/../.. k 2>&1 >>tmp.log
+  RUN=$(($RUN+1))
+done
+
+

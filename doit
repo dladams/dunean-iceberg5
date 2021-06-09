@@ -1,0 +1,73 @@
+#drawNoise 8601
+ARG=$1
+NOIOPT=$2
+if [ -z "$NOIOPT" ]; then
+  NOIOPT=Ib5pnr
+fi
+
+SAVE=true
+if [ -z "$ARG" ]; then
+  RUN1=8249
+  RUN2=9750
+elif [ $ARG = almostall ]; then
+  RUN1=8249
+  RUN2=9650
+elif [ $ARG = scan1 ]; then
+  RUN1=8615
+  RUN2=8679
+elif [ $ARG = scan2 ]; then
+  RUN1=8805
+  RUN2=8905
+elif [ $ARG = 5fpq ]; then
+  RUN1=8898
+  RUN2=9112
+elif [ $ARG = 5pq ]; then
+  RUN1=8950
+  RUN2=9112
+elif [ $ARG = scan3 ]; then
+  RUN1=9168
+  RUN2=9321
+elif [ $ARG = scan4 ]; then
+  RUN1=9431
+  RUN2=9478
+elif [ $ARG = c22 ]; then
+  RUN1=9613
+  RUN2=9711
+elif [ $ARG = scan5 ]; then
+  RUN1=9714
+  RUN2=9738
+elif [ $ARG = recent ]; then
+  RUN1=9613
+  RUN2=9750
+elif [ $ARG = ib4 ]; then
+  RUN1=7075
+  RUN2=7215
+elif [ $ARG = condenser ]; then
+  RUN1=9613
+  RUN2=9670
+elif [ $ARG = 5f ]; then
+  RUN1=8690
+  RUN2=8950
+elif [ $ARG = 4b ]; then
+  RUN1=7080
+  RUN2=7210
+elif [ $ARG -gt 0 ] 2>/dev/null; then
+  RUN1=$ARG
+  RUN2=$ARG
+  SAVE=
+else
+  echo Usage: $0 period
+  exit 0
+fi
+SRUN1=00$RUN1
+SRUN2=00$RUN2
+OUTDIR=$HOME/xfer/2021/0413/nvt
+
+drawNoiseVsTime $NOIOPT $RUN1 $RUN2 0 nsgrms 200 true
+drawNoiseVsTime $NOIOPT $RUN1 $RUN2 0 nsgrms50 2000 true
+if [ -n "$SAVE" ]; then
+  echo
+  cp noiseVsTime_nsgrms_median_$SRUN1-$SRUN2.png $OUTDIR
+  cp noiseVsTime_nsgrms50_median_$SRUN1-$SRUN2.png $OUTDIR
+  echo Results copied to $OUTDIR
+fi

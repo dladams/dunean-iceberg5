@@ -1,0 +1,47 @@
+#!/bin/sh
+
+LEV=$1
+RUN=$2
+EVT=$3
+FLAG=$4
+
+if [ -z "$EVT" ]; then
+  echo Usage: $0 LEV RUN EVT
+  echo "  LEV = cal, cnr"
+  exit 0
+fi
+
+SRUN=$RUN
+while [ ${#SRUN} -lt 6 ]; do SRUN=0$SRUN; done
+SPER=$(ibRunPeriod $RUN)
+if [ -z "$SPER" ]; then exit 2; fi
+SEVT=$EVT
+while [ ${#SEVT} -lt 6 ]; do SEVT=0$SEVT; done
+
+ULEV=${LEV^}
+SCFG=runIb5$ULEV/setIceberg$SPER/addIbChtKe
+SDAT=iceberg$SRUN/event$SEVT
+RUNDIR=$SCFG/$SDAT
+
+if [ "$FLAG" = clean ]; then
+  echo Cleaning... $RUNDIR
+  rm -rf $RUNDIR
+  exit 0
+fi
+
+echo
+if [ ! -r $RUNDIR -o "$FLAG" = retry ]; then
+  ibFindFiles $RUN - >/dev/null
+  echo
+  echo Processing event
+  duneproc $SCFG $SDAT $NPROC $NSKIP $FLAG
+  if [ ! -r $RUNDIR/run.log ]; then
+    echo Event processing failed.
+    exit 1
+  fi
+else
+  echo Event processing directory exists: $RUNDIR
+fi
+
+echo
+echo "Finished processing $RUNDIR"

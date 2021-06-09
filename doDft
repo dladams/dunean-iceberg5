@@ -1,0 +1,48 @@
+RUNS=$1
+REC1=ped
+REC2=pnr
+
+if [[ "$RUNS" == *"-"* ]]; then
+  RUN1=$(echo $RUNS | sed 's/-.*//g')
+  RUN2=$(echo $RUNS | sed 's/.*-//g')
+  SRUN1=$(formatInt $RUN1)
+  SRUN2=$(formatInt $RUN2)
+  SPER=$(ibRunPeriod $RUN1)
+  DSNAM=ibgroup$SRUN1-$SRUN2
+  PLTFIL=dft-${REC1}_${REC2}-$RUN1-$RUN2.png
+else
+  RUN=$RUNS
+  SRUN=$(formatInt $RUN)
+  SPER=$(ibRunPeriod $RUN)
+  DSNAM=iceberg$SRUN
+  PLTFIL=dft-${REC1}_${REC2}-$RUN.png
+fi
+
+RUNDIR1=ib5${REC1}NoiseDft/setIceberg$SPER/$DSNAM
+RUNDIR2=ib5${REC2}NoiseDft/setIceberg$SPER/$DSNAM
+PLTDIR=plots-dft
+PUBDIR=~/wwwdune/protodune/iceberg/data/dftsum/$SPER
+
+if [ ! -r $RUNDIR1 ]; then
+  rm -f $PLTDIR/$PLTFIL
+  duneproc ib5${REC1}NoiseDft/setIceberg$SPER $DSNAM
+fi
+
+if [ ! -r $RUNDIR2 ]; then
+  rm -f $PLTDIR/$PLTFIL
+  duneproc ib5${REC2}NoiseDft/setIceberg$SPER $DSNAM
+fi
+
+if [ ! -r $PLTDIR/$PLTFIL ]; then
+  rm -f $PUBDIR/$PLTFIL
+  ibMergeDftPlots $RUNS . ${REC1}:${REC2}
+fi
+
+if [ ! -r $PUBDIR ]; then
+  mkdir $PUBDIR
+fi
+if [ ! -r $PUBDIR/$PLTFIL ]; then
+  cp $PLTDIR/$PLTFIL $PUBDIR
+  makeIndex $PUBDIR k
+  makeIndex $PUBDIR/.. k
+fi
